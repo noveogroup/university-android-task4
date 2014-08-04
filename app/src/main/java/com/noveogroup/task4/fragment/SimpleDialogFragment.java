@@ -24,6 +24,7 @@ public class SimpleDialogFragment extends DialogFragment {
 
     private String dialogText;
     private boolean isEmbedded;
+    private OnFragmentClickListener onFragmentClickListener;
 
     public static SimpleDialogFragment newInstance(String dialogText, boolean isEmbedded) {
         SimpleDialogFragment fragment = new SimpleDialogFragment();
@@ -58,21 +59,16 @@ public class SimpleDialogFragment extends DialogFragment {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(getActivity() instanceof OnFragmentClickListener) {
+                if(onFragmentClickListener != null) {
                     Bundle bundle = new Bundle();
                     bundle.putString(DIALOG_TEXT, dialogText);
                     bundle.putBoolean(IS_EMBEDDED, isEmbedded);
-                    ((OnFragmentClickListener) getActivity()).onFragmentClick(getTag(), bundle);
+                    onFragmentClickListener.onFragmentClick(getTag(), bundle);
                 }
             }
         });
 
         return view;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
     }
 
     @Override
@@ -90,12 +86,11 @@ public class SimpleDialogFragment extends DialogFragment {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if(getActivity() instanceof OnFragmentClickListener) {
+                        if(onFragmentClickListener != null) {
                             Bundle bundle = new Bundle();
                             bundle.putString(DIALOG_TEXT, dialogText);
                             bundle.putBoolean(IS_EMBEDDED, isEmbedded);
-                            ((OnFragmentClickListener) getActivity()).onFragmentClick(getTag(),
-                                                                                      bundle);
+                            onFragmentClickListener.onFragmentClick(getTag(), bundle);
                         }
                     }
                 });
@@ -110,5 +105,9 @@ public class SimpleDialogFragment extends DialogFragment {
         super.onSaveInstanceState(outState);
         outState.putString(DIALOG_TEXT, dialogText);
         outState.putBoolean(IS_EMBEDDED, isEmbedded);
+    }
+
+    public void setOnFragmentClickListener(OnFragmentClickListener onFragmentClickListener) {
+        this.onFragmentClickListener = onFragmentClickListener;
     }
 }

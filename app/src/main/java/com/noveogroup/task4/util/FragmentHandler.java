@@ -33,23 +33,18 @@ public class FragmentHandler {
         transaction.commit();
     }
 
-    public static void swapFragments(FragmentManager fragmentManager, int container1Id, String tag1,
-                                     int container2Id, String tag2, boolean doAdd) {
+    public static void putTwoFragments(FragmentManager fragmentManager,
+                                     int container1Id, String tag1, Fragment fragment1,
+                                     int container2Id, String tag2, Fragment fragment2,
+                                     boolean doAdd) {
 
         fragmentManager.executePendingTransactions();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        Fragment fragment1 = fragmentManager.findFragmentByTag(tag1);
-        Fragment fragment2 = fragmentManager.findFragmentByTag(tag2);
-        transaction.remove(fragment1);
-        transaction.remove(fragment2);
-//        if(doAdd) {
-//            transaction.addToBackStack(null);
-//        }
-        transaction.commit();
-        fragmentManager.executePendingTransactions();
-        transaction = fragmentManager.beginTransaction();
-        transaction.add(container1Id, fragment2, tag2);
-        transaction.add(container2Id, fragment1, tag1);
+        transaction.replace(container1Id, fragment1, tag1);
+        transaction.replace(container2Id, fragment2, tag2);
+        if(doAdd) {
+            transaction.addToBackStack(null);
+        }
         transaction.commit();
     }
 }

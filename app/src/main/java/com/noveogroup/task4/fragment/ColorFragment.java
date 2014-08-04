@@ -14,6 +14,8 @@ public final class ColorFragment extends Fragment {
 
     public final static String COLOR = "com.noveogroup.task4.COLOR";
 
+    private OnFragmentClickListener onFragmentClickListener;
+
     public static ColorFragment newInstance(int color) {
         ColorFragment fragment = new ColorFragment();
         Bundle bundle = new Bundle();
@@ -32,7 +34,6 @@ public final class ColorFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_color, container, false);
 
-//        Bundle bundle = savedInstanceState != null ? savedInstanceState : getArguments();
         Bundle bundle = getArguments();
         int color = bundle != null ? bundle.getInt(COLOR) : Color.WHITE;
         view.setBackgroundColor(color);
@@ -40,12 +41,16 @@ public final class ColorFragment extends Fragment {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(getActivity() instanceof OnFragmentClickListener) {
-                    ((OnFragmentClickListener) getActivity()).onFragmentClick(getTag(), null);
+                if(onFragmentClickListener != null) {
+                    onFragmentClickListener.onFragmentClick(getTag(), null);
                 }
             }
         });
 
         return view;
+    }
+
+    public void setOnFragmentClickListener(OnFragmentClickListener onFragmentClickListener) {
+        this.onFragmentClickListener = onFragmentClickListener;
     }
 }
