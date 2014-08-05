@@ -1,36 +1,68 @@
 package com.noveogroup.task4;
 
-import android.support.v7.app.ActionBarActivity;
+
+import android.app.Activity;
+import android.app.DialogFragment;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.View;
 
+public class MainActivity extends Activity implements View.OnClickListener {
 
-public class MainActivity extends ActionBarActivity {
+	public static final String BOOL_KEY = "SWITCHED_BOOL";
+	boolean switched = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-    }
+
+		FragmentManager fragmentManager = getFragmentManager();
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
+		if (savedInstanceState == null) {
+			fragmentManager.executePendingTransactions();
+			fragmentManager.beginTransaction()
+					.add(R.id.upper_left, new UpperLeftFragment(), "UpperLeft")
+					.add(R.id.upper_right, new UpperRightFragment())
+					.add(R.id.lower_left, new LowerLeftFragment())
+					.add(R.id.lower_right, new LowerRightFragment()).commit();
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+
+		} else {
+			switched = savedInstanceState.getBoolean(BOOL_KEY);
+		}
+	}
+
+	@Override
+	public void onClick(View v) {
+
+		System.out.println(R.id.upper_left);
+		if (!switched && v.getTag() == UpperLeftFragment.TAG) {
+			Fragment fragmentUp = getFragmentManager().findFragmentById(R.id.upper_right);
+			Fragment fragmentDown = getFragmentManager().findFragmentById(R.id.lower_right);
+			getFragmentManager().beginTransaction()
+					.remove(fragmentUp)
+					.remove(fragmentDown).commit();
+			getFragmentManager().executePendingTransactions();
+			getFragmentManager().beginTransaction()
+					.replace(R.id.lower_right, fragmentUp)
+					.replace(R.id.upper_right, fragmentDown)
+					.commit();
+			switched = true;
+			return;
+		}
+		if (v.getTag() == LowerLeftFragment.TAG) {
+			LowerLeftFragment fragment = (LowerLeftFragment) getFragmentManager().findFragmentById(R.id.lower_left);
+			fragment.showDialog();
+		}
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		outState.putBoolean(BOOL_KEY, switched);
+		super.onSaveInstanceState(outState);
+	}
 }
