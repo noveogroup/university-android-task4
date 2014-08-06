@@ -24,5 +24,4 @@ public class UpperLeftFragment extends Fragment {
 
 	}
 
-
 }

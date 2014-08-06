@@ -2,16 +2,14 @@ package com.noveogroup.task4;
 
 
 import android.app.Activity;
-import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.View;
 
 public class MainActivity extends Activity implements View.OnClickListener {
 
-	public static final String BOOL_KEY = "SWITCHED_BOOL";
+	public static final String SWITCHED_BOOL_KEY = "SWITCHED_BOOL";
 	boolean switched = false;
 
     @Override
@@ -25,14 +23,14 @@ public class MainActivity extends Activity implements View.OnClickListener {
 		if (savedInstanceState == null) {
 			fragmentManager.executePendingTransactions();
 			fragmentManager.beginTransaction()
-					.add(R.id.upper_left, new UpperLeftFragment(), "UpperLeft")
+					//		.add(R.id.upper_left, new UpperLeftFragment(), "UpperLeft")
 					.add(R.id.upper_right, new UpperRightFragment())
-					.add(R.id.lower_left, new LowerLeftFragment())
+					.add(R.id.lower_left, LowerLeftFragment.newInstance())
 					.add(R.id.lower_right, new LowerRightFragment()).commit();
 
 
 		} else {
-			switched = savedInstanceState.getBoolean(BOOL_KEY);
+			switched = savedInstanceState.getBoolean(SWITCHED_BOOL_KEY);
 		}
 	}
 
@@ -56,13 +54,15 @@ public class MainActivity extends Activity implements View.OnClickListener {
 		}
 		if (v.getTag() == LowerLeftFragment.TAG) {
 			LowerLeftFragment fragment = (LowerLeftFragment) getFragmentManager().findFragmentById(R.id.lower_left);
+			//getFragmentManager().beginTransaction().remove(fragment).commit();
+			//getFragmentManager().executePendingTransactions();
 			fragment.showDialog();
 		}
 	}
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
-		outState.putBoolean(BOOL_KEY, switched);
+		outState.putBoolean(SWITCHED_BOOL_KEY, switched);
 		super.onSaveInstanceState(outState);
 	}
 }

@@ -5,23 +5,17 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.webkit.WebViewFragment;
+import android.widget.Toast;
 
 
 public class LowerLeftFragment extends DialogFragment {
 
 	public static final String TAG = "ShowDialog";
-
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-	}
+	public static final String IS_DIALOG_ARG = "IS_DIALOG";
 
 
 	@Override
@@ -29,48 +23,54 @@ public class LowerLeftFragment extends DialogFragment {
 							 Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
 
-		View v = inflater.inflate(R.layout.fragment_lower_left, container, false);
-
-		v.setOnClickListener((MainActivity) getActivity());
-		v.setTag(TAG);
+		//View v = inflater.inflate(R.layout.fragment_lower_left, container, false);
+		//View v = super.onCreateView(inflater, container, savedInstanceState);
+		View v;
+		if (getArguments().getBoolean("IS_DIALOG", false)) {
+			v = super.onCreateView(inflater, container, savedInstanceState);
+		} else {
+			v = inflater.inflate(R.layout.fragment_lower_left, container, false);
+			v.setOnClickListener((MainActivity) getActivity());
+			v.setTag(TAG);
+		}
 		return v;
 	}
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
-		AlertDialog dialog = new AlertDialog.Builder(getActivity()).setIcon(R.drawable.ic_launcher).
-				setPositiveButton(getString(R.string.alert_dialog_yes), new DialogInterface.OnClickListener() {
+		return new AlertDialog.Builder(getActivity())
+				.setTitle(R.string.alert_dialog_text)
+				.setPositiveButton(R.string.alert_dialog_yes, new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						onAgree();
+						Toast.makeText(getActivity(), R.string.positive_answer, Toast.LENGTH_SHORT).show();
 					}
-				}).
-				setNegativeButton(getString(R.string.alert_dialog_no), new DialogInterface.OnClickListener() {
+				})
+				.setNegativeButton(R.string.alert_dialog_no, new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						onDecline();
+						Toast.makeText(getActivity(), R.string.negative_answer, Toast.LENGTH_SHORT).show();
 					}
-				}).create();
-		dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-		return dialog;
+				})
+				.create();
 	}
 
-
-	private void onAgree() {
-		getFragmentManager().findFragmentByTag("UpperLeft").getView().setBackgroundColor(Color.GREEN);
-	}
-
-	private void onDecline() {
-		getFragmentManager().findFragmentByTag("UpperLeft").getView().setBackgroundColor(Color.RED);
-
-	}
 
 	void showDialog() {
-		DialogFragment newFragment = LowerLeftFragment.newInstance();
-		newFragment.show(getFragmentManager(), "dialog");
+		DialogFragment newFragment = LowerLeftFragment.newInstance(true);
+		newFragment.show(getActivity().getFragmentManager(), "dialog");
 	}
 
-	private static DialogFragment newInstance() {
-		return new LowerLeftFragment();
+	public static DialogFragment newInstance() {
+		return newInstance(false);
+	}
+
+	public static DialogFragment newInstance(boolean dialog) {
+
+		DialogFragment fragment = new LowerLeftFragment();
+		Bundle args = new Bundle();
+		args.putBoolean(IS_DIALOG_ARG, dialog);
+		fragment.setArguments(args);
+		return fragment;
 	}
 }

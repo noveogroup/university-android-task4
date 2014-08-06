@@ -3,7 +3,9 @@
 
 	<string name="app_name">task4</string>
 	<string name="alert_dialog_text">Alert Dialog Test</string>
-	<string name="alert_dialog_yes">YES</string>
-	<string name="alert_dialog_no">NO</string>
+	<string name="alert_dialog_yes">POSITIVE</string>
+	<string name="alert_dialog_no">NEGATIVE</string>
+	<string name="positive_answer">Positive answer</string>
+	<string name="negative_answer">Negative answer</string>
 
 </resources>
