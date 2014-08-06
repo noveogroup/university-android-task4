@@ -2,11 +2,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.yuri.myapplication.CustomDialogFragment">
+    tools:context="com.example.yuri.myapplication.TopFragment">
 
     <TextView
+        android:id="@+id/text_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Dialog Fragment" />
+        android:text="Eat me!"
+        android:gravity="center"/>
 
 </LinearLayout>

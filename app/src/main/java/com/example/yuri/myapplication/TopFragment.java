@@ -1,7 +1,7 @@
 package com.example.yuri.myapplication;
 
-import android.os.Bundle;
 import android.app.Fragment;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +13,7 @@ import android.widget.TextView;
  */
 public class TopFragment extends Fragment {
 
-    View view;
+    private TextView textView;
 
     public TopFragment() {
         // Required empty public constructor
@@ -24,12 +24,11 @@ public class TopFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        view = inflater.inflate(R.layout.fragment_top, container, false);
+        View view = inflater.inflate(R.layout.fragment_top, container, false);
+        textView = (TextView) view.findViewById(R.id.text_view);
+        view.setBackground(getResources().getDrawable(R.drawable.bg));
+        view.getBackground().setAlpha(60);
 
         return view;
-    }
-
-    public void setText(String str) {
-        ((TextView) getView().findViewById(R.id.text_view)).setText(str);
     }
 }
