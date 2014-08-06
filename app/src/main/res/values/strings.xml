@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Task 4</string>
+    <string name="top_left_text">Top left fragment</string>
+    <string name="top_right_text">Top right fragment</string>
+    <string name="center_fragment">Center fragment</string>
+    <string name="dialog_text">Dialog!</string>
+</resources>
