@@ -1,6 +1,7 @@
 package com.noveogroup.task4;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.DialogFragment;
@@ -48,6 +49,16 @@ public class BottomLeftFragment extends DialogFragment {
         });
         mHandler.postDelayed(mBlinker, BLINK_DELAY);
         return mView;
+    }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
+        FragmentManager manager = getFragmentManager();
+        manager.executePendingTransactions();
+        manager.beginTransaction()
+                .add(R.id.bottom_left, this)
+                .commit();
     }
 
     @Override
