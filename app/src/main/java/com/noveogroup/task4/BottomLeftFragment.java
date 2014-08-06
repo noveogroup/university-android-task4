@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -36,7 +37,12 @@ public class BottomLeftFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 if (!getShowsDialog()) {
-                    new BottomLeftFragment().show(getFragmentManager(), null);
+                    FragmentManager manager = getFragmentManager();
+                    manager.beginTransaction()
+                            .remove(BottomLeftFragment.this)
+                            .commit();
+                    manager.executePendingTransactions();
+                    show(manager, null);
                 }
             }
         });
