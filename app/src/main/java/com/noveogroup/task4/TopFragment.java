@@ -2,6 +2,7 @@ package com.noveogroup.task4;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +15,7 @@ public class TopFragment extends Fragment {
 
     private TextView mTextView;
     private String   mText;
-    private boolean  mActionEnabled;
+    private boolean  mActionEnabled = true;
 
     public static TopFragment newInstance(String text, boolean actionEnabled) {
         Bundle args = new Bundle();
@@ -25,12 +26,21 @@ public class TopFragment extends Fragment {
         return instance;
     }
 
+    public void setText(String text) {
+        mText = text;
+        if (mTextView != null) {
+            mTextView.setText(text);
+        }
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle args = (savedInstanceState == null) ? getArguments() : savedInstanceState;
-        mActionEnabled = args.getBoolean(KEY_ACTION_ENABLED);
-        mText = args.getString(KEY_TEXT);
+        if (args != null) {
+            mActionEnabled = args.getBoolean(KEY_ACTION_ENABLED);
+            mText = args.getString(KEY_TEXT);
+        }
     }
 
     @Override
@@ -43,6 +53,7 @@ public class TopFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mTextView = new TextView(getActivity());
+        mTextView.setGravity(Gravity.CENTER);
         mTextView.setText(mText);
         mTextView.setOnClickListener(new View.OnClickListener() {
             @Override
