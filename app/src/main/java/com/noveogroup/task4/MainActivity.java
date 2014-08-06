@@ -1,54 +1,50 @@
 package com.noveogroup.task4;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
+import android.webkit.WebViewFragment;
 import android.widget.FrameLayout;
 
-public class MainActivity extends Activity {
-
-    private boolean clickFlag = false;
+public class MainActivity extends FragmentActivity {
+    private WebViewFragment rightBottomFragment;
+    private Fragment rightTopFragment;
     private boolean replacedFlag = false;
-    private static final String KEY_CLICK_FLAG = "com.noveogroup.task4.click.flag";
     private static final String KEY_REPLACED_FLAG = "com.noveogroup.task4.replaced.flag";
-    private static final String TAG_RIGHT_BOTTOM = "com.noveogroup.task4.right.bottom";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        FrameLayout leftTopContainer;
-        FrameLayout rightBottomContainer;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        FrameLayout leftTopContainer = (FrameLayout) findViewById(R.id.left_top_fragment);
+        FrameLayout leftBottomContainer = (FrameLayout) findViewById(R.id.left_bottom_container);
+        rightBottomFragment = new RightBottomFragment();
+        rightTopFragment = new TopFragment();
 
-        leftTopContainer = (FrameLayout) findViewById(R.id.left_top_fragment);
-        rightBottomContainer = (FrameLayout) findViewById(R.id.right_bottom_container);
-
-        getFragmentManager().beginTransaction()
-                .add(R.id.right_top_container, new TopFragment(), "")
-                .commit();
-
-        getFragmentManager().beginTransaction()
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.right_top_container, rightTopFragment)
                 .add(R.id.left_bottom_container, new LeftBottomFragment())
                 .commit();
 
         getFragmentManager().beginTransaction()
-                .add(R.id.right_bottom_container, new RightBottomFragment(), TAG_RIGHT_BOTTOM)
+                .add(R.id.right_bottom_container, rightBottomFragment)
                 .commit();
 
         leftTopContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!clickFlag) {
+                if(!replacedFlag) {
                     replaceFragments();
-                    clickFlag = true;
                 }
             }
         });
 
-        rightBottomContainer.setOnClickListener(new View.OnClickListener() {
+        leftBottomContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                LeftBottomDialog dialog = new LeftBottomDialog();
+                dialog.show(getSupportFragmentManager(), "dialog");
             }
         });
     }
@@ -57,7 +53,6 @@ public class MainActivity extends Activity {
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         if(savedInstanceState != null) {
-            clickFlag = savedInstanceState.getBoolean(KEY_CLICK_FLAG);
             replacedFlag = savedInstanceState.getBoolean(KEY_REPLACED_FLAG);
         }
         if(replacedFlag) {
@@ -68,19 +63,25 @@ public class MainActivity extends Activity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putBoolean(KEY_CLICK_FLAG, clickFlag);
         outState.putBoolean(KEY_REPLACED_FLAG, replacedFlag);
     }
 
     private void replaceFragments() {
-        getFragmentManager().beginTransaction()
-                .replace(R.id.left_bottom_container, new RightBottomFragment())
+        getSupportFragmentManager().beginTransaction()
+                .remove(rightTopFragment)
                 .commit();
         getFragmentManager().beginTransaction()
-                .replace(R.id.right_top_container, new LeftBottomFragment())
+                .remove(rightBottomFragment)
+                .commit();
+
+        getSupportFragmentManager().executePendingTransactions();
+        getFragmentManager().executePendingTransactions();
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.right_bottom_container, rightTopFragment)
                 .commit();
         getFragmentManager().beginTransaction()
-                .replace(R.id.right_bottom_container, new TopFragment(), TAG_RIGHT_BOTTOM)
+                .replace(R.id.right_top_container, rightBottomFragment)
                 .commit();
         replacedFlag = true;
     }
