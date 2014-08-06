@@ -4,18 +4,14 @@ package com.noveogroup.task4.fragment;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.noveogroup.task4.R;
 import com.noveogroup.task4.listener.OnFragmentClickListener;
-import com.noveogroup.task4.util.FragmentHandler;
 
 public class SimpleDialogFragment extends DialogFragment {
 
@@ -24,7 +20,6 @@ public class SimpleDialogFragment extends DialogFragment {
 
     private String dialogText;
     private boolean isEmbedded;
-    private OnFragmentClickListener onFragmentClickListener;
 
     public static SimpleDialogFragment newInstance(String dialogText, boolean isEmbedded) {
         SimpleDialogFragment fragment = new SimpleDialogFragment();
@@ -59,12 +54,7 @@ public class SimpleDialogFragment extends DialogFragment {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(onFragmentClickListener != null) {
-                    Bundle bundle = new Bundle();
-                    bundle.putString(DIALOG_TEXT, dialogText);
-                    bundle.putBoolean(IS_EMBEDDED, isEmbedded);
-                    onFragmentClickListener.onFragmentClick(getTag(), bundle);
-                }
+                performClickResponse();
             }
         });
 
@@ -86,12 +76,7 @@ public class SimpleDialogFragment extends DialogFragment {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if(onFragmentClickListener != null) {
-                            Bundle bundle = new Bundle();
-                            bundle.putString(DIALOG_TEXT, dialogText);
-                            bundle.putBoolean(IS_EMBEDDED, isEmbedded);
-                            onFragmentClickListener.onFragmentClick(getTag(), bundle);
-                        }
+                        performClickResponse();
                     }
                 });
 
@@ -107,7 +92,12 @@ public class SimpleDialogFragment extends DialogFragment {
         outState.putBoolean(IS_EMBEDDED, isEmbedded);
     }
 
-    public void setOnFragmentClickListener(OnFragmentClickListener onFragmentClickListener) {
-        this.onFragmentClickListener = onFragmentClickListener;
+    private void performClickResponse() {
+        if(getActivity() instanceof OnFragmentClickListener) {
+            Bundle bundle = new Bundle();
+            bundle.putString(DIALOG_TEXT, dialogText);
+            bundle.putBoolean(IS_EMBEDDED, isEmbedded);
+            ((OnFragmentClickListener) getActivity()).onFragmentClick(getTag(), bundle);
+        }
     }
 }

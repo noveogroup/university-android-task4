@@ -21,7 +21,7 @@
             android:layout_margin="@dimen/layout_margin"
             />
 
-        <FrameLayout
+        <fragment android:name="com.noveogroup.task4.fragment.ColorFragment"
             android:id="@+id/fragment_right_top"
             android:layout_width="0dp"
             android:layout_height="match_parent"
