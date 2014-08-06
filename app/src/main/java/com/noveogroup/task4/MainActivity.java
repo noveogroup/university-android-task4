@@ -6,8 +6,6 @@ import android.support.v4.app.FragmentManager;
 
 public class MainActivity extends FragmentActivity {
 
-    private static final String TOP_LEFT_TAG = "top_left";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -18,6 +16,7 @@ public class MainActivity extends FragmentActivity {
             manager.beginTransaction()
                     .add(R.id.top_right, topRight)
                     .add(R.id.bottom_left, new BottomLeftFragment())
+                    .add(R.id.bottom_right, new BottomRightFragment())
                     .commit();
 
             TopFragment topLeft = (TopFragment)manager.findFragmentById(R.id.top_left);
