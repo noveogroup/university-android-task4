@@ -21,10 +21,6 @@ public class LowerLeftFragment extends DialogFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
-		// Inflate the layout for this fragment
-
-		//View v = inflater.inflate(R.layout.fragment_lower_left, container, false);
-		//View v = super.onCreateView(inflater, container, savedInstanceState);
 		View v;
 		if (getArguments().getBoolean("IS_DIALOG", false)) {
 			v = super.onCreateView(inflater, container, savedInstanceState);

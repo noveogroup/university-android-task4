@@ -16,14 +16,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 		FragmentManager fragmentManager = getFragmentManager();
-
-
 		if (savedInstanceState == null) {
 			fragmentManager.executePendingTransactions();
 			fragmentManager.beginTransaction()
-					//		.add(R.id.upper_left, new UpperLeftFragment(), "UpperLeft")
 					.add(R.id.upper_right, new UpperRightFragment())
 					.add(R.id.lower_left, LowerLeftFragment.newInstance())
 					.add(R.id.lower_right, new LowerRightFragment()).commit();
@@ -36,8 +32,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
 	@Override
 	public void onClick(View v) {
-
-		System.out.println(R.id.upper_left);
 		if (!switched && v.getTag() == UpperLeftFragment.TAG) {
 			Fragment fragmentUp = getFragmentManager().findFragmentById(R.id.upper_right);
 			Fragment fragmentDown = getFragmentManager().findFragmentById(R.id.lower_right);
@@ -54,8 +48,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
 		}
 		if (v.getTag() == LowerLeftFragment.TAG) {
 			LowerLeftFragment fragment = (LowerLeftFragment) getFragmentManager().findFragmentById(R.id.lower_left);
-			//getFragmentManager().beginTransaction().remove(fragment).commit();
-			//getFragmentManager().executePendingTransactions();
 			fragment.showDialog();
 		}
 	}
