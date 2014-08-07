@@ -1,48 +1,52 @@
 package com.noveogroup.task4;
 
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.DialogInterface;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 
-public class LowerLeftFragment extends DialogFragment {
+public class LowerLeftFragment extends DialogFragment implements View.OnClickListener {
 
-	public static final String TAG = "ShowDialog";
-	public static final String IS_DIALOG_ARG = "IS_DIALOG";
 
+	public static final String FRAGMENT_TAG = "DialogFragment";
+	public static final String IS_DIALOG_BOOL_KEY = "IS_DIALOG";
+	boolean isDialog = false;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
+		if (savedInstanceState != null) {
+			isDialog = savedInstanceState.getBoolean(IS_DIALOG_BOOL_KEY);
+		}
 		View v;
 		v = inflater.inflate(R.layout.fragment_lower_left, container, false);
-		v.setOnClickListener((MainActivity) getActivity());
-		v.setTag(TAG);
+		v.setOnClickListener(this);
 		return v;
 	}
 
-	void showDialog() {
-		DialogFragment newFragment = LowerLeftFragment.newInstance(true);
-		newFragment.show(getActivity().getFragmentManager(), "dialog");
+	@Override
+	public void onClick(View v) {
+		FragmentTransaction transaction = getActivity().getFragmentManager().beginTransaction();
+
+		if (isDialog) {
+			dismiss();
+			getFragmentManager().executePendingTransactions();
+			transaction.add(R.id.lower_left, this, LowerLeftFragment.FRAGMENT_TAG);
+			transaction.commit();
+		} else {
+			transaction.remove(this);
+			show(transaction, LowerLeftFragment.FRAGMENT_TAG);
+		}
+		isDialog = !isDialog;
 	}
 
-	public static DialogFragment newInstance() {
-		return newInstance(false);
-	}
-
-	public static DialogFragment newInstance(boolean dialog) {
-
-		DialogFragment fragment = new LowerLeftFragment();
-		Bundle args = new Bundle();
-		args.putBoolean(IS_DIALOG_ARG, dialog);
-		fragment.setArguments(args);
-		return fragment;
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		outState.putBoolean(IS_DIALOG_BOOL_KEY, isDialog);
+		super.onSaveInstanceState(outState);
 	}
 }
