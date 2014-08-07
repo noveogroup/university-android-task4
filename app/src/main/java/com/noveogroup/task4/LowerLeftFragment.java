@@ -21,40 +21,12 @@ public class LowerLeftFragment extends DialogFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
-		// Inflate the layout for this fragment
-
-		//View v = inflater.inflate(R.layout.fragment_lower_left, container, false);
-		//View v = super.onCreateView(inflater, container, savedInstanceState);
 		View v;
-		if (getArguments().getBoolean("IS_DIALOG", false)) {
-			v = super.onCreateView(inflater, container, savedInstanceState);
-		} else {
-			v = inflater.inflate(R.layout.fragment_lower_left, container, false);
-			v.setOnClickListener((MainActivity) getActivity());
-			v.setTag(TAG);
-		}
+		v = inflater.inflate(R.layout.fragment_lower_left, container, false);
+		v.setOnClickListener((MainActivity) getActivity());
+		v.setTag(TAG);
 		return v;
 	}
-
-	@Override
-	public Dialog onCreateDialog(Bundle savedInstanceState) {
-		return new AlertDialog.Builder(getActivity())
-				.setTitle(R.string.alert_dialog_text)
-				.setPositiveButton(R.string.alert_dialog_yes, new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						Toast.makeText(getActivity(), R.string.positive_answer, Toast.LENGTH_SHORT).show();
-					}
-				})
-				.setNegativeButton(R.string.alert_dialog_no, new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						Toast.makeText(getActivity(), R.string.negative_answer, Toast.LENGTH_SHORT).show();
-					}
-				})
-				.create();
-	}
-
 
 	void showDialog() {
 		DialogFragment newFragment = LowerLeftFragment.newInstance(true);
