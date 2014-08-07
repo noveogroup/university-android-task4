@@ -15,21 +15,26 @@
         android:orientation="horizontal"
         android:layout_weight="0.5">
 
-            <RelativeLayout
+            <FrameLayout
                 android:id="@+id/top_left_block"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.5">
+                <fragment
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:tag="@string/top_fragment_tag"
+                    android:name="com.example.yuri.myapplication.TopFragment"
+                    tools:layout="@layout/fragment_top" />
+                </FrameLayout>
 
-                </RelativeLayout>
-
-            <RelativeLayout
+            <FrameLayout
                 android:id="@+id/top_right_block"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.5">
 
-            </RelativeLayout>
+            </FrameLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -38,21 +43,21 @@
             android:orientation="horizontal"
             android:layout_weight="0.5">
 
-            <RelativeLayout
+            <FrameLayout
                 android:id="@+id/bottom_left_block"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.5">
 
-            </RelativeLayout>
+            </FrameLayout>
 
-            <RelativeLayout
+            <FrameLayout
                 android:id="@+id/bottom_right_block"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.5">
 
-            </RelativeLayout>
+            </FrameLayout>
         </LinearLayout>
 
 </LinearLayout>

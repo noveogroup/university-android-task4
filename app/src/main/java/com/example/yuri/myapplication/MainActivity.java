@@ -1,14 +1,13 @@
 package com.example.yuri.myapplication;
 
 import android.app.Activity;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
 
 public class MainActivity extends Activity {
-
-    private static final String TOP_FRAGMENT_1_TAG = "TOP_FRAGMENT_1_TAG";
 
     private boolean isTopLeftClickable = true;
     private static final String IS_TOP_LEFT_CLICKABLE_KEY = "IS_TOP_LEFT_CLICKABLE_KEY";
@@ -28,10 +27,9 @@ public class MainActivity extends Activity {
         final CustomDialogFragment fragment3;
         final WebFragment fragment4;
 
-        if (savedInstanceState == null) {
-            fragment1 = new TopFragment();
-            getFragmentManager().beginTransaction().replace(R.id.top_left_block, fragment1, TOP_FRAGMENT_1_TAG).commit();
+        fragment1 = (TopFragment) getFragmentManager().findFragmentByTag(getResources().getString(R.string.top_fragment_tag));
 
+        if (savedInstanceState == null) {
             fragment2 = new TopFragment();
             getFragmentManager().beginTransaction().replace(R.id.top_right_block, fragment2).commit();
 
@@ -41,7 +39,6 @@ public class MainActivity extends Activity {
             fragment4 = new WebFragment();
             getFragmentManager().beginTransaction().replace(R.id.bottom_right_block, fragment4).commit();
         } else {
-            fragment1 = (TopFragment) getFragmentManager().findFragmentByTag(TOP_FRAGMENT_1_TAG);
             fragment3 = (CustomDialogFragment) getFragmentManager().findFragmentById(R.id.bottom_left_block);
 
             if (isTopLeftClickable) {
@@ -67,8 +64,12 @@ public class MainActivity extends Activity {
         findViewById(R.id.bottom_left_block).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomDialogFragment dialog = new CustomDialogFragment();
-                dialog.show(getFragmentManager(), "dialog");
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                if (fragment3 != null) {
+                    ft.remove(fragment3);
+                }
+
+                fragment3.show(ft, "dialog");
             }
         });
 
@@ -84,5 +85,4 @@ public class MainActivity extends Activity {
 
         outState.putBoolean(IS_TOP_LEFT_CLICKABLE_KEY, isTopLeftClickable);
     }
-
 }
