@@ -3,6 +3,7 @@ package com.noveogroup.task4;
 
 import android.app.DialogFragment;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,6 +31,16 @@ public class LowerLeftFragment extends DialogFragment implements View.OnClickLis
 
 	@Override
 	public void onClick(View v) {
+		switchMode();
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		outState.putBoolean(IS_DIALOG_BOOL_KEY, isDialog);
+		super.onSaveInstanceState(outState);
+	}
+
+	private void switchMode() {
 		FragmentTransaction transaction = getActivity().getFragmentManager().beginTransaction();
 
 		if (isDialog) {
@@ -45,8 +56,9 @@ public class LowerLeftFragment extends DialogFragment implements View.OnClickLis
 	}
 
 	@Override
-	public void onSaveInstanceState(Bundle outState) {
-		outState.putBoolean(IS_DIALOG_BOOL_KEY, isDialog);
-		super.onSaveInstanceState(outState);
+	public void onCancel(DialogInterface dialog) {
+		switchMode();
 	}
+
+
 }
