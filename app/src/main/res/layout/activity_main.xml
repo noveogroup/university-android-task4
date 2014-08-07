@@ -1,0 +1,48 @@
+<TableLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
+
+	<TableRow
+		android:layout_width="match_parent"
+		android:layout_height="0dp"
+		android:layout_weight="1">
+
+
+        <fragment
+            android:id="@+id/upper_left"
+            android:name="com.noveogroup.task4.UpperLeftFragment"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+            android:layout_column="0"
+			android:layout_weight="1"
+            />
+        <FrameLayout
+            android:id="@+id/upper_right"
+              android:layout_width="0dp"
+              android:layout_height="match_parent"
+			  android:layout_column="1"
+			  android:layout_weight="1"/>
+	</TableRow>
+
+	<TableRow
+		android:layout_width="match_parent"
+		android:layout_height="0dp"
+		android:layout_weight="1"
+		android:minHeight="500dp">
+
+		<FrameLayout
+			android:id="@+id/lower_left"
+			android:layout_width="0dp"
+			android:layout_height="match_parent"
+			android:layout_column="0"
+			android:layout_weight="1"/>
+
+		<FrameLayout
+			android:id="@+id/lower_right"
+			android:layout_width="0dp"
+			android:layout_height="match_parent"
+			android:layout_column="1"
+			android:layout_weight="1"/>
+	</TableRow>
+</TableLayout>
