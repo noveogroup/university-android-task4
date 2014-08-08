@@ -3,6 +3,7 @@ package com.example.admin.task4;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -56,17 +57,26 @@ public class MainActivity extends Activity {
         findViewById(R.id.bottom_left_fragment).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                BottomLeftFragment dialog = new BottomLeftFragment();
-                dialog.show(getFragmentManager(), "DIALOG");
+                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                fragmentTransaction.remove(bottomLeftFragment);
+                bottomLeftFragment.show(fragmentTransaction, "DIALOG");
             }
         });
     }
 
     private void swapFragments() {
-        bottomLeftFragment = new BottomLeftFragment();
-        bottomRightFragment = new BottomRightFragment();
-        getFragmentManager().beginTransaction().replace(R.id.bottom_right_fragment, bottomLeftFragment).commit();
-        getFragmentManager().beginTransaction().replace(R.id.bottom_left_fragment, bottomRightFragment).commit();
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.remove(bottomLeftFragment);
+        fragmentTransaction.remove(bottomRightFragment);
+        fragmentTransaction.commit();
+        fragmentManager.executePendingTransactions();
+
+        fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.bottom_left_fragment, bottomRightFragment);
+        fragmentTransaction.add(R.id.bottom_right_fragment, bottomLeftFragment);
+        fragmentTransaction.commit();
+
     }
 
     @Override
