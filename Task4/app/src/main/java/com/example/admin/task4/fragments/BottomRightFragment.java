@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.webkit.WebViewFragment;
 
 import com.example.admin.task4.R;
@@ -24,6 +25,13 @@ public class BottomRightFragment extends WebViewFragment {
         super.onCreateView(inflater, container, savedInstanceState);
         WebView webView = getWebView();
         webView.loadUrl(URL);
+        webView.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                view.loadUrl(url);
+                return true;
+            }
+        });
         return webView;
     }
 }
