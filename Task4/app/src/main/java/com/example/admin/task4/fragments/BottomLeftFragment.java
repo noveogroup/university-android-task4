@@ -2,6 +2,8 @@ package com.example.admin.task4.fragments;
 
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.app.FragmentManager;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -20,5 +22,13 @@ public class BottomLeftFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_bottom_left, container, false);
+    }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.executePendingTransactions();
+        fragmentManager.beginTransaction().replace(R.id.bottom_left_fragment, this).commit();
     }
 }
